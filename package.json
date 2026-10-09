@@ -1,6 +1,6 @@
 {
   "name": "split",
-  "homepage": "https://github.com/andrew-markin/split",
+  "homepage": "https://github.com/andrew-markin/split-one",
   "version": "0.1.1",
   "scripts": {
     "vue-i18n-extract": "vue-i18n-extract report --vueFiles './src/**/*.?(js|vue)' --languageFiles './src/locales/*.?(json|yml|yaml|js)'",
