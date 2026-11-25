@@ -1,5 +1,8 @@
 # Split
 
+[![CI](https://github.com/andrew-markin/split-one/actions/workflows/ci.yml/badge.svg)](https://github.com/andrew-markin/split-one/actions/workflows/ci.yml)
+[![License: GPL v3](https://img.shields.io/github/license/andrew-markin/split-one)](LICENSE)
+
 **Split** is a simple open-source application for splitting common expenses. Every split lives at its own unique URL, so sharing it is as easy as sending a link. All data is encrypted in the browser before it leaves your device.
 
 **Try it:** https://split-one.mayfleet.com
