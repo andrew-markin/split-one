@@ -95,6 +95,10 @@ To get a token, run `npm run token split` in a Blobs checkout with the same `TOK
 
 Locale files live in [`src/locales`](./src/locales). To add a language, copy `en.json` to `<locale>.json`, translate the values and set `_LOCALE_TITLE` to the language's native name. It will show up in the menu automatically.
 
+## Deployment
+
+Every push and pull request is linted and built by the [CI workflow](.github/workflows/ci.yml), and pushes to `main` are deployed to GitHub Pages. The build takes the `VUE_APP_*` values from the repository secrets with the same names.
+
 ## License
 
 Split is released under the [GNU General Public License v3.0](./LICENSE).
