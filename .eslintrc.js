@@ -15,7 +15,8 @@ module.exports = {
     parser: '@babel/eslint-parser'
   },
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    // Warnings and errors are the diagnostics of failed synchronization
+    'no-console': process.env.NODE_ENV === 'production' ? ['warn', { allow: ['warn', 'error'] }] : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
