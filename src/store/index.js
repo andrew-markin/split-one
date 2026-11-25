@@ -13,6 +13,7 @@ import Split from './split'
 const SYNC_DELAY = 2000
 const SYNC_ENSURE_INTERVAL = 30000
 const SYNC_ATTEMPTS_COUNT = 10
+const SUBMIT_TIMEOUT = 10000
 
 Vue.use(Vuex)
 
@@ -58,12 +59,16 @@ socket.on('connect_error', (err) => {
 })
 
 socket.on('connect', async () => {
-  // Adjust local timestams
-  let localTimestamp = Date.now()
-  const { timestamp: remoteTimestamp } = await submit('now')
-  localTimestamp = Math.floor((localTimestamp + Date.now()) / 2)
-  adjustTimestamp(remoteTimestamp - localTimestamp)
-  store.dispatch('setupSocket')
+  try {
+    // Adjust local timestamps
+    let localTimestamp = Date.now()
+    const { timestamp: remoteTimestamp } = await submit('now')
+    localTimestamp = Math.floor((localTimestamp + Date.now()) / 2)
+    adjustTimestamp(remoteTimestamp - localTimestamp)
+    await store.dispatch('setupSocket')
+  } catch (err) {
+    console.warn('Unable to set up socket:', err.message)
+  }
 })
 
 socket.on('changed', () => {
@@ -73,7 +78,9 @@ socket.on('changed', () => {
 const submit = (event, ...args) => {
   return new Promise((resolve, reject) => {
     if (!socket.connected) return reject(new Error('Socket is not connected'))
-    socket.emit(event, ...args, (res) => {
+    // Without a timeout a lost acknowledgement would hold the sync mutex forever
+    socket.timeout(SUBMIT_TIMEOUT).emit(event, ...args, (err, res) => {
+      if (err) return reject(new Error(`Request '${event}' timed out`))
       const { error, ...rest } = res || {}
       if (error) reject(new Error(error))
       else resolve(rest)
@@ -209,13 +216,14 @@ const store = new Vuex.Store({
   },
   actions: {
     async setupSocket ({ state, dispatch }) {
-      if (!socket.connected) return
+      // The key may not be set yet if the socket connects before the split is loaded
+      if (!socket.connected || !state.key) return
       await submit('ref', keyToRef(state.key))
       dispatch('sync')
     },
     async resetSocket () {
       if (!socket.connected) return
-      await submit('ref', undefined)
+      await submit('ref', null) // Unsubscribe from the current blob
     },
     copyLink ({ state }) {
       copyToClipboard(getSplitLink(state.key))
@@ -332,7 +340,7 @@ const store = new Vuex.Store({
         commit('setPref', { name, value })
         await dispatch('saveIfNeeded')
       } catch (err) {
-        console.warn('!Unable to set preference:', err.message)
+        console.warn('Unable to set preference:', err.message)
       } finally {
         release()
       }
