@@ -47,7 +47,9 @@
 }
 .opaque {
   opacity: 1.0;
-  overflow-y: scroll;
+  /* The scrollbar shows up only when the dialog is taller than the viewport:
+     with a reserved one the dialog would sit off the center of the page */
+  overflow-y: auto;
 }
 .dialog {
   margin-top: auto;
