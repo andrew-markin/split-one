@@ -1,7 +1,20 @@
 {
-  "name": "split",
-  "homepage": "https://github.com/andrew-markin/split-one",
+  "name": "split-one",
   "version": "1.0.0",
+  "private": true,
+  "description": "Simple open-source application for splitting common expenses and sharing them by link",
+  "homepage": "https://split-one.mayfleet.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrew-markin/split-one.git"
+  },
+  "bugs": {
+    "url": "https://github.com/andrew-markin/split-one/issues"
+  },
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": ">=20.19.0"
+  },
   "scripts": {
     "vue-i18n-extract": "vue-i18n-extract report --vueFiles './src/**/*.?(js|vue)' --languageFiles './src/locales/*.?(json|yml|yaml|js)'",
     "start": "vue-cli-service serve",
