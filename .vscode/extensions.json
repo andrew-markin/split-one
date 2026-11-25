@@ -2,6 +2,6 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "mikestead.dotenv",
-    "octref.vetur"
+    "Vue.volar"
   ]
 }
