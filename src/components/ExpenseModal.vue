@@ -77,13 +77,12 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 
 import AppModal from '@/components/AppModal'
 import CategorySelect from '@/components/CategorySelect'
 import ParticipantSelect from '@/components/ParticipantSelect'
-import { amountIsValid, decimalsCount, normalizedAmount } from '@/utils'
+import { amountIsValid, decimalsCount, formatDate, normalizedAmount } from '@/utils'
 
 export default {
   components: {
@@ -126,7 +125,7 @@ export default {
       ]
     },
     dateFormatted () {
-      return this.current.date ? moment(this.current.date).locale(this.$i18n.locale).format('LL') : ''
+      return formatDate(this.current.date, this.$i18n.locale)
     },
     currentDescriptionNormalized () {
       return (this.current.description || '').trim()

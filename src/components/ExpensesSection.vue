@@ -50,11 +50,11 @@
 
 <script>
 import { mdiPlus, mdiTrashCanOutline } from '@mdi/js'
-import moment from 'moment'
 import { mapActions, mapGetters } from 'vuex'
 
 import ConfirmationModal from '@/components/ConfirmationModal'
 import ExpenseModal from '@/components/ExpenseModal'
+import { formatDate } from '@/utils'
 
 export default {
   components: {
@@ -102,7 +102,7 @@ export default {
       }
       return this.expenses.map((expense) => ({
         id: expense.id,
-        date: expense.data?.date && moment(expense.data?.date).locale(this.$i18n.locale).format('LL'),
+        date: formatDate(expense.data?.date, this.$i18n.locale),
         description: expense.data?.description,
         category: categoryName(expense.data?.category),
         payer: participantName(expense.data?.payer),

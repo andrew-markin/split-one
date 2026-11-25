@@ -97,6 +97,14 @@ export const normalizedAmount = (value) => {
   return Number(value).toFixed(2)
 }
 
+export const formatDate = (value, locale) => {
+  if (!value) return ''
+  // A bare date is parsed as UTC midnight, so the time is added to keep it local
+  const date = new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00` : value)
+  if (isNaN(date.getTime())) return ''
+  return new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long', day: 'numeric' }).format(date)
+}
+
 export const moveCursorToEnd = (event) => {
   const element = event.target
   const position = element.value.length
