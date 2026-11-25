@@ -47,9 +47,11 @@
 }
 .opaque {
   opacity: 1.0;
-  /* The scrollbar shows up only when the dialog is taller than the viewport:
-     with a reserved one the dialog would sit off the center of the page */
+  /* The scrollbar shows up only when the dialog is taller than the viewport,
+     and the gutter reserved on both sides keeps the dialog centered exactly,
+     so showing and hiding it doesn't shift anything horizontally */
   overflow-y: auto;
+  scrollbar-gutter: stable both-edges;
 }
 .dialog {
   margin-top: auto;
