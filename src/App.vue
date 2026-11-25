@@ -62,6 +62,38 @@ html {
   overflow-x: hidden !important;
   overflow-y: scroll !important;
 }
+/* Thin scrollbars without arrow buttons, colored like the borders.
+   Chromium and Safari are styled with ::-webkit-scrollbar, which gives full
+   control (Chromium ignores it once scrollbar-width or scrollbar-color is set),
+   and Firefox, which doesn't support it, with the standard properties. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--v-border-base);
+  background-clip: padding-box;
+  /* The transparent border makes the visible thumb 4px wide */
+  border: 3px solid transparent;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  border-width: 2px;
+}
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--v-border-base) transparent;
+  }
+}
 .muted-1 {
   opacity: 0.5;
 }

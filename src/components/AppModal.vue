@@ -64,12 +64,19 @@ html[modal="true"] {
 </style>
 
 <script>
-// Measure scrollbar width
-const scrollDiv = document.createElement('div')
-scrollDiv.style.cssText = 'width: 100px; overflow: scroll; position: absolute; top: -9999px;'
-document.body.appendChild(scrollDiv)
-const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-document.body.removeChild(scrollDiv)
+// The scrollbar width is measured on the first use rather than at the module
+// load: the styles that make it thin are applied later than this module runs
+let scrollbarWidth
+const measureScrollbar = () => {
+  if (scrollbarWidth === undefined) {
+    const scrollDiv = document.createElement('div')
+    scrollDiv.style.cssText = 'width: 100px; overflow: scroll; position: absolute; top: -9999px;'
+    document.body.appendChild(scrollDiv)
+    scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
+    document.body.removeChild(scrollDiv)
+  }
+  return scrollbarWidth
+}
 
 export default {
   props: {
@@ -96,7 +103,7 @@ export default {
       }, value ? 0 : 200)
     },
     contentShown (value) {
-      const padding = value ? `${scrollbarWidth}px` : ''
+      const padding = value ? `${measureScrollbar()}px` : ''
       document.documentElement.setAttribute('modal', value)
       document.documentElement.style['padding-right'] = padding
       const headerElements = document.getElementsByTagName('header')
