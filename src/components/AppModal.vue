@@ -30,12 +30,6 @@
   </div>
 </template>
 
-<style>
-html[modal="true"] {
-  overflow-y: hidden !important;
-}
-</style>
-
 <style scoped>
 .backdrop {
   background-color: rgba(128, 128, 128, 0.3);
@@ -64,19 +58,9 @@ html[modal="true"] {
 </style>
 
 <script>
-// The scrollbar width is measured on the first use rather than at the module
-// load: the styles that make it thin are applied later than this module runs
-let scrollbarWidth
-const measureScrollbar = () => {
-  if (scrollbarWidth === undefined) {
-    const scrollDiv = document.createElement('div')
-    scrollDiv.style.cssText = 'width: 100px; overflow: scroll; position: absolute; top: -9999px;'
-    document.body.appendChild(scrollDiv)
-    scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-    document.body.removeChild(scrollDiv)
-  }
-  return scrollbarWidth
-}
+// While the dialog is shown, the page below the app bar stays put: the
+// scrollbar keeps its reserved gutter and the backdrop holds the scrollable
+// content out of reach, so no compensation of the layout is needed
 
 export default {
   props: {
@@ -101,15 +85,6 @@ export default {
       this.readyTimeout = setTimeout(() => {
         this.ready = value
       }, value ? 0 : 200)
-    },
-    contentShown (value) {
-      const padding = value ? `${measureScrollbar()}px` : ''
-      document.documentElement.setAttribute('modal', value)
-      document.documentElement.style['padding-right'] = padding
-      const headerElements = document.getElementsByTagName('header')
-      for (const headerElement of headerElements) {
-        headerElement.style['padding-right'] = padding
-      }
     },
     backdropShown (value) {
       if (!value) this.$emit('closed')

@@ -58,9 +58,20 @@
 </template>
 
 <style>
+/* Only the panel below the app bar scrolls, not the whole page, so the
+   scrollbar doesn't touch the app bar */
 html {
-  overflow-x: hidden !important;
-  overflow-y: scroll !important;
+  overflow: hidden;
+}
+.v-main {
+  height: 100vh;
+  height: 100dvh;
+}
+.v-main__wrap {
+  overflow-y: auto;
+  /* Reserve space for the scrollbar, so the layout doesn't jump when it
+     appears, on both sides to keep the tasks aligned with the app bar */
+  scrollbar-gutter: stable both-edges;
 }
 /* Thin scrollbars without arrow buttons, colored like the borders.
    Chromium and Safari are styled with ::-webkit-scrollbar, which gives full
