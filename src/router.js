@@ -13,9 +13,10 @@ export default new VueRouter({
     component: SplitView
   }, {
     path: '*',
-    redirect: {
+    // Generate a fresh key on every redirect (not once at module load)
+    redirect: () => ({
       name: 'main',
       params: { key: generateKey() }
-    }
+    })
   }]
 })
